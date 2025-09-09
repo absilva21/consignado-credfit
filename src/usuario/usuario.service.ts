@@ -11,11 +11,20 @@ export class UsuarioService {
        private readonly usuarioRepository:Repository<Usuario>,){}
       
   create(createUsuarioDto: CreateUsuarioDto) {
-     return this.usuarioRepository.save(createUsuarioDto);
+    
+    return this.usuarioRepository.save(createUsuarioDto);
+    
+     
   }
 
   findAll() {
     return this.usuarioRepository.find();
+  }
+
+  findBycpf(cpf: string){
+    return this.usuarioRepository.findOne({where:{
+      cpf: cpf
+    }})
   }
 
   findOne(id: number) {
@@ -23,10 +32,10 @@ export class UsuarioService {
   }
 
   update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} usuario`;
+    return this.usuarioRepository.update(id,updateUsuarioDto)
   }
 
   remove(id: number) {
-    return `This action removes a #${id} usuario`;
+    return this.usuarioRepository.delete(id);
   }
 }

@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, Index } from 'typeorm';
 
 @Entity()
 export class Usuario {
@@ -6,6 +6,7 @@ export class Usuario {
     id: number;
     @Column()
     nome: string;
+    @Index({unique: true})
     @Column()
     cpf: string;
     @Column()
