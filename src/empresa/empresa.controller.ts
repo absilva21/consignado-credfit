@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete,HttpStatus, HttpException  } from '@nestjs/common';
 import { EmpresaService } from './empresa.service';
 import { CreateEmpresaDto } from './dto/create-empresa.dto';
 import { UpdateEmpresaDto } from './dto/update-empresa.dto';
@@ -8,13 +8,28 @@ export class EmpresaController {
   constructor(private readonly empresaService: EmpresaService) {}
 
   @Post()
-  create(@Body() createEmpresaDto: CreateEmpresaDto) {
-    return this.empresaService.create(createEmpresaDto);
+  async create(@Body() createEmpresaDto: CreateEmpresaDto) {
+    try{
+      return await this.empresaService.create(createEmpresaDto);
+    }catch(error: unknown){
+      if(error instanceof Error && error.message==='SQLITE_CONSTRAINT: UNIQUE constraint failed: empresa.cnpj'){
+        throw new HttpException("empresa já cadastrada", HttpStatus.FORBIDDEN);
+      }else{
+        throw new HttpException("erro desconhecido", HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+    
   }
 
   @Get()
   findAll() {
     return this.empresaService.findAll();
+  }
+
+  //busca por cnpj
+  @Get('cnpj')
+  findOneCnpj(@Param('cnpj') cnpj:string){
+    return this.empresaService.findOneCnpj(cnpj)
   }
 
   @Get(':id')
