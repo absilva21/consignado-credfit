@@ -9,7 +9,7 @@ export class EmpresaController {
 
   @Post()
   async create(@Body() createEmpresaDto: CreateEmpresaDto) {
-    try{
+   /* try{
       return await this.empresaService.create(createEmpresaDto);
     }catch(error: unknown){
       if(error instanceof Error && error.message==='SQLITE_CONSTRAINT: UNIQUE constraint failed: empresa.cnpj'){
@@ -17,8 +17,8 @@ export class EmpresaController {
       }else{
         throw new HttpException("erro desconhecido", HttpStatus.INTERNAL_SERVER_ERROR);
       }
-    }
-    
+    }*/
+    return await this.empresaService.create(createEmpresaDto);
   }
 
   @Get()

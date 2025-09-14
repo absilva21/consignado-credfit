@@ -17,7 +17,11 @@ export class EmpresaService {
   }
 
   findAll() {
-    return this.empresaRepository.find();
+    return this.empresaRepository.find({
+      relations:{
+        representante:true
+      }
+    });
   }
 
   //busca por cnpj
